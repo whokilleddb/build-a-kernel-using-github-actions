@@ -9,8 +9,8 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-        - uses: actions/checkout@v2
         - name: Install Dependencies
+        - uses: actions/checkout@v2
         run: |
             apt install -y curl wget gcc bison make cmake build-essential libncurses-dev bison flex libssl-dev libelf-dev
             
