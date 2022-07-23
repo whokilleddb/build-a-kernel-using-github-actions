@@ -5,12 +5,83 @@ on:
         branches: [build]
 
 jobs:
-    build:
+    compile:
         runs-on: ubuntu-latest
 
         steps:
-        - uses: actions/checkout@v2
+        - uses: actions/checkout@v3
+        
         - name: Install Dependencies
-        run: |
-            apt install -y curl wget gcc  
+          run:  | 
+            sudo apt install -y curl wget gcc bison make cmake build-essential libncurses-dev bison flex libssl-dev libelf-dev fakeroot tree
+            mkdir ./kernel
+
+        - name: Memory operations
+          run: |
+            sudo apt autoremove -y
+            sudo fallocate -l 1G /swapfile
+            sudo dd if=/dev/zero of=/swapfile bs=1024 count=1048576
+            sudo chmod 600 /swapfile
+            sudo mkswap /swapfile
+            sudo sh -c "echo '/swapfile swap swap defaults 0 0' >> /etc/fstab"
+            sudo swapon --show
+            sudo sysctl vm.swappiness=90
+          
+        - name: Fetch source
+          working-directory: ./kernel          
+          run:  |
+            wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.18.14.tar.xz
+            wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.18.14.tar.sign
             
+        - name: Verify Sources
+          working-directory: ./kernel
+          run: |
+            unxz -v linux-5.18.14.tar.xz
+            gpg --keyserver hkps://keyserver.ubuntu.com --recv-keys 647F28654894E3BD457199BE38DBBDC86092693E
+            gpg --verify linux-5.18.14.tar.sign
+            
+        - name: Extract Tarball
+          working-directory: ./kernel
+          run:  |
+            tar -xf linux-5.18.14.tar
+            sudo chown -R $(whoami):$(whoami) linux-5.18.14 
+            
+        - name: Clean Kernel tree
+          working-directory: ./kernel/linux-5.18.14
+          run: make mrproper      
+
+        - name: Cache Build
+          id: cache-build
+          uses: actions/cache@v3
+          with:
+            path: ./kernel
+            key: ${{ runner.os }}-build       
+        
+        - name: Configure and Make
+          working-directory:  ./kernel/linux-5.18.14
+          if: steps.cache-build.outputs.cache-hit != 'true'
+          run: |
+            wget https://raw.githubusercontent.com/whokilleddb/build-a-kernel-using-github-actions/main/my-kernel-config -O .config
+            make -j $(nproc)
+            make modules
+            make bzImage
+
+        - name: Cache Modules
+          id: cache-modules
+          uses: actions/cache@v3
+          with:
+            path: ./kernel
+            key: ${{ runner.os }}-modules       
+
+        - name: Make Modules
+          working-directory:  ./kernel/linux-5.18.14
+          if: steps.cache-modules.outputs.cache-hit != 'true'
+          run: |
+            make modules
+            make bzImage
+
+        - name: View Dir Tree
+          working-directory:  ./kernel/
+          run: tree -L 2
+          
+
