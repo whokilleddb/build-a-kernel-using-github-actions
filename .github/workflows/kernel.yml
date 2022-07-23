@@ -9,6 +9,8 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
+        - uses: actions/checkout@v3
+        
         - name: Install Dependencies
           run:  | 
             sudo apt install -y curl wget gcc bison make cmake build-essential libncurses-dev bison flex libssl-dev libelf-dev fakeroot tree
@@ -35,10 +37,18 @@ jobs:
             
         - name: Clean Kernel tree
           working-directory: ./kernel/linux-5.18.14
-          run: make mrproper             
+          run: make mrproper      
 
+        - name: Cache Build
+          id: cache-build
+          uses: actions/cache@v3
+          with:
+            path: ./kernel
+            key: ${{ runner.os }}-primes       
+        
         - name: Configure and Make
           working-directory:  ./kernel/linux-5.18.14
+          if: steps.cache-build.outputs.cache-hit != 'true'
           run: |
             wget https://raw.githubusercontent.com/whokilleddb/build-a-kernel-using-github-actions/main/my-kernel-config -O .config
             make -j $(nproc)
