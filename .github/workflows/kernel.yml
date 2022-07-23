@@ -30,7 +30,7 @@ jobs:
         - name: Extract Tarball
           working-directory: ./kernel
           run:  |
-            tar -xvf linux-5.18.14 
+            tar -xvf linux-5.18.14.tar
             chown -R $(whoami):$(whoami) linux-5.18.14 
             
         - name: Clean Kernel tree
