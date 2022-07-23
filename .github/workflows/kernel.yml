@@ -31,7 +31,7 @@ jobs:
           working-directory: ./kernel
           run:  |
             tar -xf linux-5.18.14.tar
-            chown -R $(whoami):$(whoami) linux-5.18.14 
+            sudo chown -R $(whoami):$(whoami) linux-5.18.14 
             
         - name: Clean Kernel tree
           working-directory: ./kernel/linux-5.18.14
