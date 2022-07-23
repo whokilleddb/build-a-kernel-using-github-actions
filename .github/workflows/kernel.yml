@@ -11,7 +11,7 @@ jobs:
         steps:
         - name: Install Dependencies
           run:  | 
-            sudo apt install -y curl wget gcc bison make cmake build-essential libncurses-dev bison flex libssl-dev libelf-dev fakeroot 
+            sudo apt install -y curl wget gcc bison make cmake build-essential libncurses-dev bison flex libssl-dev libelf-dev fakeroot tree
             mkdir ./kernel
           
         - name: Fetch source
@@ -42,5 +42,9 @@ jobs:
           run: |
             wget https://raw.githubusercontent.com/whokilleddb/build-a-kernel-using-github-actions/main/my-kernel-config -O .config
             make -j $(nproc)
+
+        - nmae: View Dir Tree
+          working-directory:  ./kernel/
+          run: tree -L 2
           
 
