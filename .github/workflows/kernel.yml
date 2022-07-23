@@ -12,10 +12,14 @@ jobs:
         - name: Install Dependencies
           run:  sudo apt install -y curl wget gcc bison make cmake build-essential libncurses-dev bison flex libssl-dev libelf-dev fakeroot 
         - name: Fetch source
+          working-directory: ./kernel
           run:  wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.18.14.tar.xz && wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.18.14.tar.sign
         - name: Extract tarball 
-          run: unxz -v linux-5.18.14.tar.xz
+          working-directory: ./kernel
+          run: unxz -v linux-5.18.14.tar.xz && chown -R $(whoami):$(whoami) linux-5.18.14
         - name: Verify Sources
+          working-directory: ./kernel
           run:  gpg --keyserver hkps://keyserver.ubuntu.com --recv-keys 647F28654894E3BD457199BE38DBBDC86092693E; gpg --verify linux-5.18.14.tar.sign
-
+        - name: Clean Kernel tree
+          working-directory: ./kernel/linux-5.18.14
                  
