@@ -10,5 +10,5 @@ jobs:
 
         steps:
         - name: Install Dependencies
-          run:  apt install -y curl wget gcc bison make cmake build-essential libncurses-dev bison flex libssl-dev libelf-dev
+          run:  sudo apt install -y curl wget gcc bison make cmake build-essential libncurses-dev bison flex libssl-dev libelf-dev
             
