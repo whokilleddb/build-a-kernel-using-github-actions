@@ -12,7 +12,7 @@ jobs:
         - name: Install Dependencies
           run:  sudo apt install -y curl wget gcc bison make cmake build-essential libncurses-dev bison flex libssl-dev libelf-dev fakeroot 
         - name: Fetch source
-          
+          working-directory: ./kernel          
           run:  wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.18.14.tar.xz && wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.18.14.tar.sign
         - name: Extract tarball 
           working-directory: ./kernel
