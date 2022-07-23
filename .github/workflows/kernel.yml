@@ -12,5 +12,5 @@ jobs:
         - uses: actions/checkout@v2
         - name: Install Dependencies
         run: |
-            apt install -y curl wget gcc  
+            apt install -y curl wget gcc bison make cmake build-essential libncurses-dev bison flex libssl-dev libelf-dev
             
