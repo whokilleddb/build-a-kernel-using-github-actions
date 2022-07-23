@@ -16,6 +16,6 @@ jobs:
         - name: Extract tarball 
           run: unxz -v linux-5.18.14.tar.xz
         - name: Verify Sources
-          run:  gpg --recv-keys 647F28654894E3BD457199BE38DBBDC86092693E; gpg --verify linux-5.18.14.tar.sign
+          run:  gpg --keyserver hkps://keyserver.ubuntu.com --recv-keys 647F28654894E3BD457199BE38DBBDC86092693E; gpg --verify linux-5.18.14.tar.sign
 
                  
