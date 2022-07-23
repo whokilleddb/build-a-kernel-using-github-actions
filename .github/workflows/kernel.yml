@@ -13,8 +13,8 @@ jobs:
           run:  sudo apt install -y curl wget gcc bison make cmake build-essential libncurses-dev bison flex libssl-dev libelf-dev
         - name: Fetch source
           run:  wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.18.14.tar.xz && wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.18.14.tar.sign
-        - name: Extract tarball linux-5.18.14.tar.xz
-          run: unxz -v 
+        - name: Extract tarball 
+          run: unxz -v linux-5.18.14.tar.xz
         - name: Verify Sources
           run: gpg --recv-keys 647F28654894E3BD457199BE38DBBDC86092693E && gpg --verify linux-5.18.14.tar.sign
 
