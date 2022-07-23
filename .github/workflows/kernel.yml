@@ -10,7 +10,9 @@ jobs:
 
         steps:
         - name: Install Dependencies
-          run:  sudo apt install -y curl wget gcc bison make cmake build-essential libncurses-dev bison flex libssl-dev libelf-dev fakeroot 
+          run:  | 
+            sudo apt install -y curl wget gcc bison make cmake build-essential libncurses-dev bison flex libssl-dev libelf-dev fakeroot 
+            mkdir ./kernel
           
         - name: Fetch source
           working-directory: ./kernel          
