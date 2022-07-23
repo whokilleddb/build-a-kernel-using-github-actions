@@ -1,0 +1,16 @@
+name: Build_5_18_4
+
+on:
+    push:
+        branches: [build]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+        - uses: actions/checkout@v2
+        - name: Install Dependencies
+        run: |
+            apt install -y curl wget gcc  
+            
