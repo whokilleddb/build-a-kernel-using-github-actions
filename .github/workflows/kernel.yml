@@ -43,7 +43,7 @@ jobs:
             wget https://raw.githubusercontent.com/whokilleddb/build-a-kernel-using-github-actions/main/my-kernel-config -O .config
             make -j $(nproc)
 
-        - nmae: View Dir Tree
+        - name: View Dir Tree
           working-directory:  ./kernel/
           run: tree -L 2
           
